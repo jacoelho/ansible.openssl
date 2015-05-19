@@ -1,0 +1,24 @@
+---
+
+- name: openssl | sanity checks
+  assert:
+    that:
+      - "{{ item.name is defined }}"
+      - "{{ item.key is defined }}"
+      - "{{ item.cert is defined }}"
+  with_items: openssl_certificates
+
+
+- name: openssl | sanity checks | merge
+  assert:
+    that:
+      - "{{ item.cert_path is not defined }}"
+  when: item.merge is defined and item.merge and item.key_path is defined
+  with_items: openssl_certificates
+
+- name: openssl | sanity checks ca
+  assert:
+    that:
+      - "{{ item.name is defined }}"
+      - "{{ item.ca is defined }}"
+  with_items: openssl_ca

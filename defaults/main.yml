@@ -1,0 +1,17 @@
+---
+
+# keys and certs to import
+openssl_certificates: []
+
+# list of ca to install
+openssl_ca: []
+
+#path to ca certificares
+openssl_ca_path: /usr/local/share/ca-certificates
+
+# path to certificates
+openssl_certs_path: /etc/ssl/certs
+
+# path to keys
+openssl_keys_path: /etc/ssl/private
+

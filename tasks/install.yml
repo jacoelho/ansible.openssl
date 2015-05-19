@@ -1,0 +1,25 @@
+---
+
+- name: openssl | installing packages debian
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  when: ansible_os_family == 'Debian'
+  with_items:
+    - openssl
+  tags:
+    - system
+    - openssl
+    - install
+
+- name: openssl | installing packages redhat
+  yum:
+    name: "{{ item }}"
+    state: present
+  when: ansible_os_family == 'RedHat'
+  with_items:
+    - openssl
+  tags:
+    - system
+    - openssl
+    - install

@@ -1,0 +1,44 @@
+---
+
+- hosts: all
+
+  vars:
+    openssl_certificates:
+      - name: foobar.com
+        user: rails
+        group: rails
+        key: |+
+          -----BEGIN PRIVATE KEY-----
+          -----END PRIVATE KEY-----
+        cert: |+
+          -----BEGIN CERTIFICATE-----
+          -----END CERTIFICATE-----
+      - name: foobar2.com
+        key_path: /etc/my-ssl/private
+        merge: true
+        key: |+
+          -----BEGIN PRIVATE KEY-----
+          -----END PRIVATE KEY-----
+        cert: |+
+          -----BEGIN CERTIFICATE-----
+          -----END CERTIFICATE-----
+
+    openssl_ca:
+      - name: 'test'
+        ca: |+
+          -----BEGIN CERTIFICATE-----
+          -----END CERTIFICATE-----
+  pre_tasks:
+    - group:
+        name: rails
+        state: present
+    - user:
+        name: rails
+        comment: rails
+        group: rails
+        state: present
+
+  roles:
+    - jacoelho.openssl
+
+

@@ -1,0 +1,44 @@
+---
+
+- name: openssl | copying ssl keys
+  copy:
+    content: "{{ item.key }}"
+    dest:    "{{ item.key_path | default(openssl_keys_path) }}/{{ item.name }}.key"
+    owner:   "{{ item.owner | default('root') }}"
+    group:   "{{ item.group | default('root') }}"
+    mode:    0600
+  when: item.merge is not defined or item.merge == 'false'
+  with_items: openssl_certificates
+  tags:
+    - system
+    - openssl
+    - copy
+
+- name: openssl | copying ssl certs
+  copy:
+    content: "{{ item.cert }}"
+    dest:    "{{ item.cert_path | default(openssl_certs_path) }}/{{ item.name }}.crt"
+    owner:   "{{ item.owner | default('root') }}"
+    group:   "{{ item.group | default('root') }}"
+    mode:    0644
+  when: item.merge is not defined or item.merge == 'false'
+  with_items: openssl_certificates
+  tags:
+    - system
+    - openssl
+    - copy
+
+- name: openssl | copying ssl merged key cert
+  copy:
+    content: "{{ item.key + item.cert }}"
+    dest:    "{{ item.key_path | default(openssl_keys_path) }}/{{ item.name }}.pem"
+    owner:   "{{ item.owner | default('root') }}"
+    group:   "{{ item.group | default('root') }}"
+    mode:    0644
+  when: item.merge is defined and item.merge
+  with_items: openssl_certificates
+  tags:
+    - system
+    - openssl
+    - copy
+

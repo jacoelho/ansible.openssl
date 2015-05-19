@@ -1,0 +1,11 @@
+---
+
+- include: validation.yml
+
+- include: install.yml
+
+- include: directories.yml
+
+- include: copy.yml
+
+- include: ca.yml

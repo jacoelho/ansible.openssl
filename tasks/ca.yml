@@ -1,0 +1,25 @@
+---
+
+- name: openssl | copy ca certificates
+  copy:
+    content: "{{ item.ca }}"
+    dest:    "{{ item.path  | default(openssl_ca_path) }}/{{ item.name }}.crt"
+    owner:   "{{ item.user  | default('root') }}"
+    group:   "{{ item.group | default('root') }}"
+    mode:    0644
+  with_items: openssl_ca
+  register: ca
+  tags:
+    - system
+    - openssl
+    - ca
+
+- name: openssl | update ca certificates
+  command: update-ca-certificates
+    creates=/etc/ssl/certs/{{ item.name }}.pem
+  with_items: openssl_ca
+  when: ca.changed
+  tags:
+    - system
+    - openssl
+    - ca
