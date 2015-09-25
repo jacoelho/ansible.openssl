@@ -22,12 +22,37 @@
         cert: |+
           -----BEGIN CERTIFICATE-----
           -----END CERTIFICATE-----
+      - name: chained.com
+        user: rails
+        group: rails
+        chain: true
+        key: |+
+          -----BEGIN PRIVATE KEY-----
+          -----END PRIVATE KEY-----
+        cert: |+
+          -----BEGIN CERTIFICATE-----
+          CHAINED
+          -----END CERTIFICATE-----
+      - name: chained_merged.com
+        key_path: /etc/my-ssl/private
+        merge: true
+        chain: true
+        key: |+
+          -----BEGIN PRIVATE KEY-----
+          KEY
+          -----END PRIVATE KEY-----
+        cert: |+
+          -----BEGIN CERTIFICATE-----
+          CHAINED AND MERGED
+          -----END CERTIFICATE-----
 
     openssl_ca:
       - name: 'test'
         ca: |+
           -----BEGIN CERTIFICATE-----
+          CA
           -----END CERTIFICATE-----
+
   pre_tasks:
     - group:
         name: rails

@@ -8,6 +8,7 @@ openssl_certificates:
     key_path: /etc/apache2/   # optional
     cert_path: /etc/apache2/  # optional
     merge: true               # merge key and certificate into a unique file?
+    chain: true               # merge CA chain, key and certificate into a unique file?
     owner: rails              # optional
     group: rails              # optional
     cert: |+
@@ -17,6 +18,7 @@ openssl_certificates:
       -----BEGIN RSA PRIVATE KEY-----
       -----END RSA PRIVATE KEY-----
   - name: bar
+    chain: true               # merge CA chain and certificate into a unique file?
     cert: |+
       -----BEGIN CERTIFICATE-----
       -----END CERTIFICATE-----

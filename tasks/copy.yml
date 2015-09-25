@@ -1,5 +1,13 @@
 ---
 
+- name: openssl | chain CAs
+  set_fact:
+    openssl_ca_chain: "{{ openssl_ca | join('', attribute='ca') }}"
+  tags:
+    - system
+    - openssl
+    - copy
+
 - name: openssl | copying ssl keys
   copy:
     content: "{{ item.key }}"
@@ -16,7 +24,7 @@
 
 - name: openssl | copying ssl certs
   copy:
-    content: "{{ item.cert }}"
+    content: "{{ item.cert + (item.chain | default(False) | ternary(openssl_ca_chain, '')) }}"
     dest:    "{{ item.cert_path | default(openssl_certs_path) }}/{{ item.name }}.crt"
     owner:   "{{ item.owner | default('root') }}"
     group:   "{{ item.group | default('root') }}"
@@ -30,7 +38,7 @@
 
 - name: openssl | copying ssl merged key cert
   copy:
-    content: "{{ item.key + item.cert }}"
+    content: "{{ item.key + item.cert + (item.chain | default(False) | ternary(openssl_ca_chain, '')) }}"
     dest:    "{{ item.key_path | default(openssl_keys_path) }}/{{ item.name }}.pem"
     owner:   "{{ item.owner | default('root') }}"
     group:   "{{ item.group | default('root') }}"
